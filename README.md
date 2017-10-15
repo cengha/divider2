@@ -26,5 +26,7 @@ with a random number which is lower than 1000 and oppononents will be  notified.
 > The main difference between two versions is architectural. The first version mix Rest and Websocket endpoints while the second version focuses only Websocket endpoints.
 > Between them i prefer second version.
 
+### Technology Stack
 
-
+##### Backend : Java, Spring Boot, In Memory H2 db, Lombok, Thymeleaf, JODA, JUnit, Mockito
+##### Frontend: Html, Jquery, Bootstrap Stomp client, SockJs
