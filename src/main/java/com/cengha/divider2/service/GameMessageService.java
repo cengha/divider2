@@ -19,27 +19,25 @@ public class GameMessageService {
         this.repo = repo;
     }
 
-    public GameMessage getFirstByGameIdOrderByCreatedDesc(Long gameId) {
-        return repo.getFirstByGameIdOrderByCreatedDesc(gameId).orElseThrow(NoSuchGameMessageException::new);
-    }
-
-
     public GameMessage save(GameMessage gameMessage) {
         return repo.save(gameMessage);
     }
 
     public GameMessage createGameMessage(Game game) {
         GameMessage gameMessage = retrieveGameMessage(game);
-        gameMessage.setGameState(retrieveGameState(game));
-        gameMessage.setGameStateId(gameMessage.getGameState().getStateId());
-        return repo.save(gameMessage);
+        GameState gameState = retrieveGameState(game);
+        gameMessage.setGameStateId(gameState.getStateId());
+        gameMessage = repo.save(gameMessage);
+        gameMessage.setGameState(gameState);
+        return gameMessage;
     }
 
     public GameMessage createTerminateGameMessage(Game game) {
         GameMessage gameMessage = retrieveGameMessage(game);
-        gameMessage.setGameState(GameState.TERMINATED);
         gameMessage.setGameStateId(3);
-        return repo.save(gameMessage);
+        gameMessage = repo.save(gameMessage);
+        gameMessage.setGameState(GameState.TERMINATED);
+        return gameMessage;
     }
 
     private GameMessage retrieveGameMessage(Game game) {
