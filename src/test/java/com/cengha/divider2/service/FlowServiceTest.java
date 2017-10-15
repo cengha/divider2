@@ -37,11 +37,7 @@ public class FlowServiceTest {
     public void setUp() throws Exception {
         flowService = new FlowService(userService, gameService, moveService, gameMessageService);
 
-        User user = new User();
-        user.setUsername("username");
-        Mockito.when(userService.create("username")).thenReturn(user);
-        Mockito.when(userService.create("username2")).thenReturn(null);
-        Mockito.when(userService.save(user)).thenReturn(user);
+        Mockito.when(userService.create("username")).thenThrow(UserNameAlreadyTakenException.class);
 
         GameMessage gameMessage = new GameMessage();
         gameMessage.setGameId(1l);

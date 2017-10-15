@@ -49,6 +49,11 @@ public class FlowService {
 
         game = gameService.updateGameIfFinished(game, move.getNumber().equals(1), playerId);
 
+        if (game.getFinished() != null) {
+            userService.updateUserAsDisabled(game.getPlayerOneId());
+            userService.updateUserAsDisabled(game.getPlayerTwoId());
+        }
+
         return gameMessageService.createGameMessage(game);
 
     }
