@@ -1,7 +1,5 @@
 package com.cengha.divider2.repository;
 
-import com.cengha.divider2.exception.UserNameAlreadyTakenException;
-import com.cengha.divider2.model.Move;
 import com.cengha.divider2.model.User;
 import org.junit.Before;
 import org.junit.Rule;
@@ -13,10 +11,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)

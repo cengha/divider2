@@ -18,7 +18,7 @@ import java.util.Random;
 @Service
 public class GameService {
 
-    private final GameRepository repo;
+    private final GameRepository repository;
     private final MoveService moveService;
     private Random random = new Random();
 
@@ -26,19 +26,19 @@ public class GameService {
     private Integer STARTER_NUMBER_BOUND;
 
     @Autowired
-    public GameService(GameRepository repo, MoveService moveService) {
-        this.repo = repo;
+    public GameService(GameRepository repository, MoveService moveService) {
+        this.repository = repository;
         this.moveService = moveService;
     }
 
     public Game getById(Long id) {
-        return repo.getById(id).orElseThrow(NoSuchGameException::new);
+        return repository.getById(id).orElseThrow(NoSuchGameException::new);
 
     }
 
     public Game createOrUpdateGame(Long playerId) {
         Game game;
-        Optional<Game> optGame = repo.getFirstByFinishedIsNullAndStartedIsNull();
+        Optional<Game> optGame = repository.getFirstByFinishedIsNullAndStartedIsNull();
         if (optGame.isPresent()) {
             game = optGame.get();
             List<Move> allMoves = moveService.getAllByGameId(game.getId());
@@ -52,7 +52,7 @@ public class GameService {
             game = new Game(playerId);
             game.setCreated(LocalDateTime.now());
         }
-        repo.save(game);
+        repository.save(game);
         return game;
     }
 
@@ -89,7 +89,7 @@ public class GameService {
     private void updateGameAsFinished(Game game, Long winnerPlayerId) {
         game.setFinished(LocalDateTime.now());
         game.setWinnerPlayerId(winnerPlayerId);
-        repo.save(game);
+        repository.save(game);
     }
 
     private void checkIfGameStarted(Game game) {

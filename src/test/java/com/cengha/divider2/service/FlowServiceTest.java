@@ -1,7 +1,6 @@
 package com.cengha.divider2.service;
 
 import com.cengha.divider2.exception.UserNameAlreadyTakenException;
-import com.cengha.divider2.model.User;
 import com.cengha.divider2.model.message.GameMessage;
 import org.junit.Before;
 import org.junit.Rule;

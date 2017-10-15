@@ -1,32 +1,19 @@
 package com.cengha.divider2.service;
 
-import com.cengha.divider2.exception.NoSuchGameException;
 import com.cengha.divider2.model.Game;
-import com.cengha.divider2.model.Move;
 import com.cengha.divider2.model.enums.GameState;
 import com.cengha.divider2.model.message.GameMessage;
 import com.cengha.divider2.repository.GameMessageRepository;
-import com.cengha.divider2.repository.GameRepository;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
 
 @RunWith(SpringRunner.class)
 public class GameMessageServiceTest {

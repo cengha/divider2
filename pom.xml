@@ -65,6 +65,12 @@
             <artifactId>joda-time</artifactId>
             <version>2.9.9</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-messaging</artifactId>
+            <version>4.3.9.RELEASE</version>
+        </dependency>
     </dependencies>
 
     <build>
