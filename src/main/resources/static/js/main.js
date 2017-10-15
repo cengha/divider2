@@ -149,12 +149,7 @@ function terminateGame() {
 }
 
 function replay() {
-    chatPage.classList.remove('hidden');
-    playAgain.classList.add('hidden');
-    winPage.classList.add('hidden');
-    lostPage.classList.add('hidden');
-    console.log("replaying game")
-    joinGame();
+    location.reload();
 }
 
 
@@ -169,8 +164,8 @@ function setNumber() {
 }
 
 function finishGame() {
+    enableDisableButtons(true);
     finished = true;
-    $("#moveButton").prop("disabled", true).off('click');
     chatPage.classList.add('hidden');
     playAgain.classList.remove('hidden');
     if (jsonBody.winnerPlayerId === userId) {
@@ -180,11 +175,26 @@ function finishGame() {
     }
 }
 
+function enableDisableButtons(b) {
+    $("#moveButton").prop("disabled", b).off('click');
+    $("#btnPlus").prop("disabled", b).off('click');
+    $("#btnMinus").prop("disabled", b).off('click');
+}
+
+function checkSimulate() {
+
+    if ($("#simulate").is(":checked")) {
+        document.getElementById("inp-number").value = (newNumber + one) % 3 === 0 ?
+            newNumber + one : (newNumber - one) % 3 === 0 ? newNumber - one : newNumber;
+        mv();
+    }
+}
+
 function setTurnAndSimulate() {
     tpid = jsonBody.turnPlayerId;
     console.log("jsonBody.turnPlayerId-->", jsonBody.turnPlayerId);
     if (tpid === userId) {
-        $("#moveButton").prop("disabled", false).off('click');
+        enableDisableButtons(false);
         if (!finished) {
             if (simulate.checked) {
                 document.getElementById("inp-number").value = (newNumber + one) % 3 === 0 ?
@@ -193,7 +203,7 @@ function setTurnAndSimulate() {
             }
         }
     } else {
-        $("#moveButton").prop("disabled", true).off('click');
+        enableDisableButtons(true);
     }
 }
 
@@ -203,6 +213,7 @@ moveButton.addEventListener('click', mv, true);
 plusOneButton.addEventListener('click', plsN, true);
 minusOneButton.addEventListener('click', mnsN, true);
 replayButton.addEventListener('click', replay, true);
+simulate.addEventListener('click', checkSimulate, true);
 $(window).bind('beforeunload', function () {
     return 'Are you sure you want to leave?';
 });
