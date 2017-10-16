@@ -17,19 +17,19 @@ with a random starter number which is lower than **1000** (configurable in prope
 
 * Issue1: WebSocketController test can open web socket connection, send messages through channel but can't receive any.
 * Issue2: While running controller and non controller tests together at once, WebSocketControllerTest can not open ws connection due to port conflict.
-* Increase test coverage and fix web socket controller tests (At the moment client can connect but can't subscribe and receive messages)
-* Spring Cloud application properties implementation
-* Web Security and WebSocket Security implementations
-* Spring actuator endpoints implementation
-* ActiveMQ or RabbitMQ implementation
+* Increase test coverage and fix web socket controller tests.
+* Spring Cloud application properties implementation.
+* Web Security and WebSocket Security implementations.
+* Spring actuator endpoints implementation.
+* ActiveMQ or RabbitMQ implementation.
 
 ### Personal Notes
 
-> There is also first version of this [application](https://github.com/cengha/divider) . It also includes Web Security and Websocket Security implementations.
+> There is also first version of this [game](https://github.com/cengha/divider). It also includes Web Security and Websocket Security implementations.
 > The main difference between two versions is architectural. The first version mix Rest and Websocket endpoints while the second version focuses only Websocket endpoints.
-> Between them i prefer second version.
+> Between them I prefer second version.
 
 ### Technology Stack
 
-##### Backend : Java, Spring Boot, In Memory H2 db, Lombok, Thymeleaf, JODA, JUnit, Mockito
-##### Frontend: Html, Jquery, Bootstrap Stomp client, SockJs
+**Backend :** Java, Spring Boot, In Memory H2 db, Lombok, Thymeleaf, JODA, JUnit, Mockito
+**Frontend:** Html, Jquery, Bootstrap Stomp client, SockJs
