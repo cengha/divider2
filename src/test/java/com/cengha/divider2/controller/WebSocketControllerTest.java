@@ -40,8 +40,8 @@ public class WebSocketControllerTest {
     @Autowired
     private GameService gameService;
 
-    private final String GAME_CHANNEL = "/game/";
-    private final String PLAYER_CHANNEL = "/game/player/";
+    private final String GAME_CHANNEL = "/ws/channel/game/";
+    private final String PLAYER_CHANNEL = "/ws/channel/game/player/";
     private final String MESSAGE_MAPPING_JOIN_GAME = "/ws/divider/game/join/";
     private final String MESSAGE_MAPPING_TERMIN_GAME = "/ws/divider/game/" + 1 + "/player/" + 1 + "/termin";
     private final String MESSAGE_MAPPING_MAKE_MOVE = "/ws/divider/game/" + 1 + "/player/" + 1 + "/move/";
@@ -55,14 +55,18 @@ public class WebSocketControllerTest {
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         stompSession = stompClient.connect(URL, new TestStompSessionHandler() {
         }).get(1, SECONDS);
-        Thread.sleep(3000);
+        Thread.sleep(1000);
+        stompSession.subscribe(GAME_CHANNEL + 1, new JoinGameStompFrameHandler());
+        Thread.sleep(1000);
+        stompSession.subscribe(PLAYER_CHANNEL + "user1", new JoinGameStompFrameHandler());
+        Thread.sleep(1000);
     }
 
     @Test
     public void connectsToSocket() throws Exception {
 
         assertThat(stompSession.isConnected()).isTrue();
-        Thread.sleep(3000);
+        Thread.sleep(1000);
 
     }
 
@@ -70,9 +74,9 @@ public class WebSocketControllerTest {
     public void testJoinGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
         stompSession.send(MESSAGE_MAPPING_JOIN_GAME + "user1", null);
-        Thread.sleep(3000);
+        Thread.sleep(1000);
         stompSession.send(MESSAGE_MAPPING_JOIN_GAME + "user2", null);
-        Thread.sleep(3000);
+        Thread.sleep(1000);
 
     }
 
@@ -80,6 +84,7 @@ public class WebSocketControllerTest {
     public void testMakeMoveEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
         Game game = gameService.retrieveGame(1L);
+
         Integer lastNumber = game.getLastMove().getNumber();
         Integer newNumber = 0;
         if (lastNumber % 3 == 0) {
@@ -89,6 +94,7 @@ public class WebSocketControllerTest {
         } else if ((lastNumber - 1) % 3 == 0) {
             newNumber = (lastNumber - 1);
         }
+
         stompSession.send(MESSAGE_MAPPING_MAKE_MOVE + newNumber, null);
     }
 
@@ -96,7 +102,7 @@ public class WebSocketControllerTest {
     public void testTerminGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
         stompSession.send(MESSAGE_MAPPING_TERMIN_GAME, null);
-        Thread.sleep(10000);
+        Thread.sleep(1000);
     }
 
     private List<Transport> createTransportClient() {
@@ -116,16 +122,12 @@ public class WebSocketControllerTest {
             Message msg = (Message) o;
             System.out.println("Received : " + msg);
         }
-
-
     }
 
     private class TestStompSessionHandler extends StompSessionHandlerAdapter {
         @Override
         public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
             super.afterConnected(session, connectedHeaders);
-            stompSession.subscribe(GAME_CHANNEL + 1, new JoinGameStompFrameHandler());
-            stompSession.subscribe(PLAYER_CHANNEL + "user1", new JoinGameStompFrameHandler());
         }
 
         @Override

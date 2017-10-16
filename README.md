@@ -15,10 +15,13 @@ with a random number which is lower than 1000 and oppononents will be  notified.
 
 ### TODO List
 
+* Issue1: WebSocketController test can open web socket connection, send messages through channek but can't receive any.
+* Issue2: While runnin controller and non controller tests together at once, WebSocketControllerTest can not open ws connection due to port conflict.
 * Increase test coverage and fix web socket controller tests (At the moment client can connect but can't subscribe and receive messages)
 * Spring Cloud application properties implementation
 * Web Security and WebSocket Security implementations
 * Spring actuator endpoints implementation
+* ActiveMQ or RabbitMQ implementation
 
 ### Personal Notes
 
