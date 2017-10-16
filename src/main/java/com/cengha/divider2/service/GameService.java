@@ -60,7 +60,9 @@ public class GameService {
         Game game = this.getById(gameId);
         List<Move> allMovesByGameId = moveService.getAllByGameId(gameId);
         game.setMoves(allMovesByGameId);
-        game.setLastMove(allMovesByGameId.get(allMovesByGameId.size() - 1));
+        if (allMovesByGameId.size() > 0) {
+            game.setLastMove(allMovesByGameId.get(allMovesByGameId.size() - 1));
+        }
         return game;
     }
 

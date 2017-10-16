@@ -1,8 +1,13 @@
 package com.cengha.divider2.controller;
 
+import com.cengha.divider2.model.Game;
+import com.cengha.divider2.service.GameService;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
@@ -26,17 +31,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@FixMethodOrder
 public class WebSocketControllerTest {
 
     private int port = 7091;
     private String URL;
 
+    @Autowired
+    private GameService gameService;
 
-    private final String GAME_CHANNEL = "/ws/channel/game/";
-    private final String PLAYER_CHANNEL = "/ws/channel/game/player/";
+    private final String GAME_CHANNEL = "/game/";
+    private final String PLAYER_CHANNEL = "/game/player/";
     private final String MESSAGE_MAPPING_JOIN_GAME = "/ws/divider/game/join/";
-    private final String MESSAGE_MAPPING_TERMIN_GAME = "/ws/divider/game/" + 1 + "/player/" + "user1" + "/termin";
-    private final String MESSAGE_MAPPING_MAKE_MOVE = "/ws/divider/game/" + 1 + "/player/" + "user1" + "/move/" + 27;
+    private final String MESSAGE_MAPPING_TERMIN_GAME = "/ws/divider/game/" + 1 + "/player/" + 1 + "/termin";
+    private final String MESSAGE_MAPPING_MAKE_MOVE = "/ws/divider/game/" + 1 + "/player/" + 1 + "/move/";
 
     StompSession stompSession;
 
@@ -47,30 +55,48 @@ public class WebSocketControllerTest {
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         stompSession = stompClient.connect(URL, new TestStompSessionHandler() {
         }).get(1, SECONDS);
-        stompSession.subscribe(GAME_CHANNEL + 1, new JoinGameStompFrameHandler());
-        stompSession.subscribe(PLAYER_CHANNEL + "user1", new JoinGameStompFrameHandler());
+        Thread.sleep(3000);
     }
 
     @Test
     public void connectsToSocket() throws Exception {
 
         assertThat(stompSession.isConnected()).isTrue();
+        Thread.sleep(3000);
+
     }
 
     @Test
     public void testJoinGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
         stompSession.send(MESSAGE_MAPPING_JOIN_GAME + "user1", null);
+        Thread.sleep(3000);
+        stompSession.send(MESSAGE_MAPPING_JOIN_GAME + "user2", null);
+        Thread.sleep(3000);
+
     }
+
     @Test
     public void testMakeMoveEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
-        stompSession.send(MESSAGE_MAPPING_MAKE_MOVE + "user1", null);
+        Game game = gameService.retrieveGame(1L);
+        Integer lastNumber = game.getLastMove().getNumber();
+        Integer newNumber = 0;
+        if (lastNumber % 3 == 0) {
+            newNumber = lastNumber;
+        } else if ((lastNumber + 1) % 3 == 0) {
+            newNumber = (lastNumber + 1);
+        } else if ((lastNumber - 1) % 3 == 0) {
+            newNumber = (lastNumber - 1);
+        }
+        stompSession.send(MESSAGE_MAPPING_MAKE_MOVE + newNumber, null);
     }
+
     @Test
     public void testTerminGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
-        stompSession.send(MESSAGE_MAPPING_TERMIN_GAME + "user1", null);
+        stompSession.send(MESSAGE_MAPPING_TERMIN_GAME, null);
+        Thread.sleep(10000);
     }
 
     private List<Transport> createTransportClient() {
@@ -98,6 +124,8 @@ public class WebSocketControllerTest {
         @Override
         public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
             super.afterConnected(session, connectedHeaders);
+            stompSession.subscribe(GAME_CHANNEL + 1, new JoinGameStompFrameHandler());
+            stompSession.subscribe(PLAYER_CHANNEL + "user1", new JoinGameStompFrameHandler());
         }
 
         @Override
