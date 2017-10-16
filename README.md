@@ -32,4 +32,4 @@ with a random starter number which is lower than **1000** (configurable in prope
 ### Technology Stack
 
 * **Backend :** Java, Spring Boot, In Memory H2 db, Lombok, Thymeleaf, JODA, JUnit, Mockito
-* **Frontend:** Html, Jquery, Bootstrap Stomp client, SockJs
+* **Frontend:** Html, Jquery, Bootstrap, Stomp client, SockJs
