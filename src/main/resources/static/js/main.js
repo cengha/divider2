@@ -88,8 +88,8 @@ function setMessage() {
 }
 
 function onErrorReceived(payload) {
-    console.log(payload);
-    alert(payload);
+    console.log(payload.body);
+    alert(payload.body);
 }
 
 function onMessageReceived(payload) {
