@@ -111,7 +111,7 @@ public class WebSocketControllerTest {
     }
 
     @Test
-    public void eTestTerminGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+    public void fTestDisconnect() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
         stompSession.send(MESSAGE_MAPPING_TERMIN_GAME, null);
 
