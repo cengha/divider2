@@ -1,5 +1,6 @@
 package com.cengha.divider2.service.impl;
 
+import com.cengha.divider2.exception.UserNameAlreadyTakenException;
 import com.cengha.divider2.model.Game;
 import com.cengha.divider2.model.Move;
 import com.cengha.divider2.model.User;
@@ -10,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class FlowServiceImpl implements FlowService{
+public class FlowServiceImpl implements FlowService {
 
     private final UserServiceImpl userService;
     private final GameServiceImpl gameService;
@@ -29,11 +30,12 @@ public class FlowServiceImpl implements FlowService{
     @Transactional
     public GameMessage joinFirstAvailableGameOrCreateOne(String username) {
 
-        User user = userService.create(username);
+        throw new UserNameAlreadyTakenException();
+        //User user = userService.create(username);
 
-        Game game = gameService.createOrUpdateGame(user.getId());
+        //Game game = gameService.createOrUpdateGame(user.getId());
 
-        return gameMessageService.createGameMessage(game);
+        //return gameMessageService.createGameMessage(game);
 
     }
 

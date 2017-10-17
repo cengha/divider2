@@ -21,7 +21,7 @@ public class WebSocketController {
     private final FlowServiceImpl flowService;
     private final String GAME_CHANNEL = "/ws/channel/game/";
     private final String PLAYER_CHANNEL = "/ws/channel/game/player/";
-    private final String ERROR_CHANNEL = "/ws/channel/game/player/error/";
+    private final String ERROR_CHANNEL = "/ws/channel/game/player/error";
     private final String MSG_CONNECTED = "Connected to the game";
     private final String MSG_STARTED = "You have an opponent, the game has started";
     private final String MSG_FINISHED = "Game Finished";
@@ -62,11 +62,10 @@ public class WebSocketController {
     }
 
     @MessageExceptionHandler
-    public void handleException(Exception ex) {
-        SimpMessageHeaderAccessor headerAccessor = StompHeaderAccessor.create();
+    private void handleException(Exception ex,SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
         MessageHeaders headers = createHeaders(sessionId);
-        messagingTemplate.convertAndSendToUser(sessionId, ERROR_CHANNEL, MSG_ERROR + ex.getMessage(), createHeaders(sessionId));
+        messagingTemplate.convertAndSendToUser(sessionId, ERROR_CHANNEL, MSG_ERROR + ex.getMessage(), headers);
     }
 
     private MessageHeaders createHeaders(String sessionId) {

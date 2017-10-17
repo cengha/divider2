@@ -15,8 +15,8 @@ with a random starter number which is lower than **1000** (configurable in prope
 
 ### TODO List
 
-* Issue1: WebSocketController test can open web socket connection, send messages through channel but can't receive any.
-* Issue2: While running controller and non controller tests together at once, WebSocketControllerTest can not open ws connection due to port conflict.
+* Issue#1: WebSocketController test can open web socket connection, send messages through channel but can't receive any.
+* Issue#2: While running controller and non controller tests together at once, WebSocketControllerTest can not open ws connection due to port conflict.
 * Increase test coverage and fix web socket controller tests.
 * Spring Cloud application properties implementation.
 * Web Security and WebSocket Security implementations.
