@@ -3,6 +3,7 @@ package com.cengha.divider2.service;
 import com.cengha.divider2.exception.UserNameAlreadyTakenException;
 import com.cengha.divider2.model.User;
 import com.cengha.divider2.repository.UserRepository;
+import com.cengha.divider2.service.impl.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,11 +24,11 @@ public class UserServiceTest {
     @MockBean
     public UserRepository userRepository;
 
-    public UserService userService;
+    public UserServiceImpl userService;
 
     @Before
     public void setUp() throws Exception {
-        userService = new UserService(userRepository);
+        userService = new UserServiceImpl(userRepository);
     }
 
     @Test

@@ -1,12 +1,12 @@
 package com.cengha.divider2.controller;
 
+import com.cengha.divider2.exception.UserNameAlreadyTakenException;
 import com.cengha.divider2.model.Game;
-import com.cengha.divider2.service.GameService;
+import com.cengha.divider2.service.impl.GameServiceImpl;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
@@ -38,7 +38,7 @@ public class WebSocketControllerTest {
     private String URL;
 
     @Autowired
-    private GameService gameService;
+    private GameServiceImpl gameService;
 
     private final String GAME_CHANNEL = "/ws/channel/game/";
     private final String PLAYER_CHANNEL = "/ws/channel/game/player/";
@@ -103,6 +103,11 @@ public class WebSocketControllerTest {
 
         stompSession.send(MESSAGE_MAPPING_TERMIN_GAME, null);
         Thread.sleep(1000);
+    }
+
+    @Test
+    public void testErrorHandler() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+        throw new UserNameAlreadyTakenException();
     }
 
     private List<Transport> createTransportClient() {

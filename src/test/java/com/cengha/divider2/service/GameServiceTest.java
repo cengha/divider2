@@ -4,6 +4,8 @@ import com.cengha.divider2.exception.NoSuchGameException;
 import com.cengha.divider2.model.Game;
 import com.cengha.divider2.model.Move;
 import com.cengha.divider2.repository.GameRepository;
+import com.cengha.divider2.service.impl.GameServiceImpl;
+import com.cengha.divider2.service.impl.MoveServiceImpl;
 import org.joda.time.LocalDateTime;
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,14 +41,14 @@ public class GameServiceTest {
     @MockBean
     public GameRepository gameRepository;
 
-    public GameService gameService;
+    public GameServiceImpl gameService;
 
     @MockBean
-    public MoveService moveService;
+    public MoveServiceImpl moveService;
 
     @Before
     public void setUp() throws Exception {
-        gameService = new GameService(gameRepository, moveService);
+        gameService = new GameServiceImpl(gameRepository, moveService);
         ReflectionTestUtils.setField(gameService, "STARTER_NUMBER_BOUND", STARTER_NUMBER_BOUND);
     }
 

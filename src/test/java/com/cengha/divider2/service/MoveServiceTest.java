@@ -3,6 +3,7 @@ package com.cengha.divider2.service;
 import com.cengha.divider2.model.Game;
 import com.cengha.divider2.model.Move;
 import com.cengha.divider2.repository.MoveRepository;
+import com.cengha.divider2.service.impl.MoveServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +24,7 @@ public class MoveServiceTest {
     @MockBean
     public MoveRepository moveRepository;
 
-    public MoveService moveService;
+    public MoveServiceImpl moveService;
 
     public List<Move> moves;
 
@@ -31,7 +32,7 @@ public class MoveServiceTest {
 
     @Before
     public void setUp() throws Exception {
-        moveService = new MoveService(moveRepository);
+        moveService = new MoveServiceImpl(moveRepository);
 
         game = new Game(1l);
         game.setId(1l);

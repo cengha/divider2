@@ -54,6 +54,7 @@ function onConnected() {
 function joinGame() {
     // Subscribe to the Private User Channel
     stompClient.subscribe('/ws/channel/game/player/' + username, onMessageReceived);
+    stompClient.subscribe('/ws/channel/game/player/error' + username, onErrorReceived);
 
     stompClient.send("/ws/divider/game/join/" + username);
 
@@ -84,6 +85,11 @@ function setMessage() {
     } else {
         $('#messageBox').val(jsonBody.message);
     }
+}
+
+function onErrorReceived(payload) {
+    jsonBody = JSON.parse(payload.body);
+    alert(jsonBody);
 }
 
 function onMessageReceived(payload) {

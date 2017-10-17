@@ -2,6 +2,7 @@ package com.cengha.divider2.service;
 
 import com.cengha.divider2.exception.UserNameAlreadyTakenException;
 import com.cengha.divider2.model.message.GameMessage;
+import com.cengha.divider2.service.impl.*;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,22 +20,22 @@ public class FlowServiceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @MockBean
-    public GameService gameService;
+    public GameServiceImpl gameService;
 
     @MockBean
-    public UserService userService;
+    public UserServiceImpl userService;
 
     @MockBean
-    public MoveService moveService;
+    public MoveServiceImpl moveService;
 
     @MockBean
-    public GameMessageService gameMessageService;
+    public GameMessageServiceImpl gameMessageService;
 
-    public FlowService flowService;
+    public FlowServiceImpl flowService;
 
     @Before
     public void setUp() throws Exception {
-        flowService = new FlowService(userService, gameService, moveService, gameMessageService);
+        flowService = new FlowServiceImpl(userService, gameService, moveService, gameMessageService);
 
         Mockito.when(userService.create("username")).thenThrow(UserNameAlreadyTakenException.class);
 
