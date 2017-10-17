@@ -19,7 +19,7 @@ with a random starter number which is lower than **1000** (configurable in prope
 * Issue#2: While running controller and non controller tests together at once, WebSocketControllerTest can not open ws connection due to port conflict.
 * Increase test coverage and fix web socket controller tests.
 * Spring Cloud application properties implementation.
-* Web Security and WebSocket Security implementations.
+* WebSocket Security implementations.
 * ActiveMQ or RabbitMQ implementation as broker
 
 ### Personal Notes
