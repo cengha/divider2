@@ -41,10 +41,10 @@ public class GameServiceTest {
     @MockBean
     public GameRepository gameRepository;
 
-    public GameServiceImpl gameService;
+    public GameService gameService;
 
     @MockBean
-    public MoveServiceImpl moveService;
+    public MoveService moveService;
 
     @Before
     public void setUp() throws Exception {

@@ -20,16 +20,16 @@ public class FlowServiceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @MockBean
-    public GameServiceImpl gameService;
+    public GameService gameService;
 
     @MockBean
-    public UserServiceImpl userService;
+    public UserService userService;
 
     @MockBean
-    public MoveServiceImpl moveService;
+    public MoveService moveService;
 
     @MockBean
-    public GameMessageServiceImpl gameMessageService;
+    public GameMessageService gameMessageService;
 
     public FlowServiceImpl flowService;
 

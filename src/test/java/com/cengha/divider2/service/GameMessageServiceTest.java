@@ -22,7 +22,7 @@ public class GameMessageServiceTest {
     @MockBean
     public GameMessageRepository repository;
 
-    public GameMessageServiceImpl gameMessageService;
+    public GameMessageService gameMessageService;
 
     @Before
     public void setUp() throws Exception {

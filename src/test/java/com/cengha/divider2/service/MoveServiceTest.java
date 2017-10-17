@@ -24,7 +24,7 @@ public class MoveServiceTest {
     @MockBean
     public MoveRepository moveRepository;
 
-    public MoveServiceImpl moveService;
+    public MoveService moveService;
 
     public List<Move> moves;
 

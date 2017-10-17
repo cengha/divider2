@@ -24,7 +24,7 @@ public class UserServiceTest {
     @MockBean
     public UserRepository userRepository;
 
-    public UserServiceImpl userService;
+    public UserService userService;
 
     @Before
     public void setUp() throws Exception {

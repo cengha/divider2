@@ -1,11 +1,10 @@
 package com.cengha.divider2.service.impl;
 
-import com.cengha.divider2.exception.UserNameAlreadyTakenException;
 import com.cengha.divider2.model.Game;
 import com.cengha.divider2.model.Move;
 import com.cengha.divider2.model.User;
 import com.cengha.divider2.model.message.GameMessage;
-import com.cengha.divider2.service.FlowService;
+import com.cengha.divider2.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,14 +12,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class FlowServiceImpl implements FlowService {
 
-    private final UserServiceImpl userService;
-    private final GameServiceImpl gameService;
-    private final MoveServiceImpl moveService;
-    private final GameMessageServiceImpl gameMessageService;
+    private final UserService userService;
+    private final GameService gameService;
+    private final MoveService moveService;
+    private final GameMessageService gameMessageService;
 
 
     @Autowired
-    public FlowServiceImpl(UserServiceImpl userService, GameServiceImpl gameService, MoveServiceImpl moveService, GameMessageServiceImpl gameMessageService) {
+    public FlowServiceImpl(UserService userService, GameService gameService, MoveService moveService, GameMessageService gameMessageService) {
         this.userService = userService;
         this.gameService = gameService;
         this.moveService = moveService;

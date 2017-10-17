@@ -1,8 +1,7 @@
 package com.cengha.divider2.controller;
 
-import com.cengha.divider2.exception.UserNameAlreadyTakenException;
 import com.cengha.divider2.model.Game;
-import com.cengha.divider2.service.impl.GameServiceImpl;
+import com.cengha.divider2.service.GameService;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -39,7 +38,7 @@ public class WebSocketControllerTest {
     private String URL;
 
     @Autowired
-    private GameServiceImpl gameService;
+    private GameService gameService;
 
     private final String GAME_CHANNEL = "/ws/channel/game/";
     private final String PLAYER_CHANNEL = "/ws/channel/game/player/";

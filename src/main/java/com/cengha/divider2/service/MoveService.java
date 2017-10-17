@@ -1,7 +1,5 @@
 package com.cengha.divider2.service;
 
-import com.cengha.divider2.exception.IllegalNumberException;
-import com.cengha.divider2.exception.NotYourTurnException;
 import com.cengha.divider2.model.Game;
 import com.cengha.divider2.model.Move;
 

@@ -7,6 +7,7 @@ import com.cengha.divider2.model.Game;
 import com.cengha.divider2.model.Move;
 import com.cengha.divider2.repository.GameRepository;
 import com.cengha.divider2.service.GameService;
+import com.cengha.divider2.service.MoveService;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,14 +21,14 @@ import java.util.Random;
 public class GameServiceImpl implements GameService {
 
     private final GameRepository repository;
-    private final MoveServiceImpl moveService;
+    private final MoveService moveService;
     private Random random = new Random();
 
     @Value("${divider.number.upper:1000}")
     private Integer STARTER_NUMBER_BOUND;
 
     @Autowired
-    public GameServiceImpl(GameRepository repository, MoveServiceImpl moveService) {
+    public GameServiceImpl(GameRepository repository, MoveService moveService) {
         this.repository = repository;
         this.moveService = moveService;
     }

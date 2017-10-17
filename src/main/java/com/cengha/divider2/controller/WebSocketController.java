@@ -2,6 +2,7 @@ package com.cengha.divider2.controller;
 
 import com.cengha.divider2.model.enums.GameState;
 import com.cengha.divider2.model.message.GameMessage;
+import com.cengha.divider2.service.FlowService;
 import com.cengha.divider2.service.impl.FlowServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Controller;
 public class WebSocketController {
 
     private final SimpMessageSendingOperations messagingTemplate;
-    private final FlowServiceImpl flowService;
+    private final FlowService flowService;
 
     @Value("${ws.channel.game}")
     private String GAME_CHANNEL;
