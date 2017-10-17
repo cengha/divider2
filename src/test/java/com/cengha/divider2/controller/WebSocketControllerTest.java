@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.messaging.Message;
@@ -31,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@FixMethodOrder
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class WebSocketControllerTest {
 
     private int port = 7091;
@@ -55,33 +56,38 @@ public class WebSocketControllerTest {
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         stompSession = stompClient.connect(URL, new TestStompSessionHandler() {
         }).get(1, SECONDS);
-        Thread.sleep(1000);
+
         stompSession.subscribe(GAME_CHANNEL + 1, new JoinGameStompFrameHandler());
-        Thread.sleep(1000);
+
         stompSession.subscribe(PLAYER_CHANNEL + "user1", new JoinGameStompFrameHandler());
-        Thread.sleep(1000);
+
+        stompSession.subscribe(PLAYER_CHANNEL + "user2", new JoinGameStompFrameHandler());
+
     }
 
     @Test
-    public void connectsToSocket() throws Exception {
-
+    public void aTestConnectsToSocket() throws Exception {
         assertThat(stompSession.isConnected()).isTrue();
-        Thread.sleep(1000);
+
 
     }
 
     @Test
-    public void testJoinGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+    public void bTestJoinGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
         stompSession.send(MESSAGE_MAPPING_JOIN_GAME + "user1", null);
-        Thread.sleep(1000);
-        stompSession.send(MESSAGE_MAPPING_JOIN_GAME + "user2", null);
-        Thread.sleep(1000);
 
     }
 
     @Test
-    public void testMakeMoveEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+    public void cTestJoinGameEndpointSecondUser() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+
+        stompSession.send(MESSAGE_MAPPING_JOIN_GAME + "user2", null);
+
+    }
+
+    @Test
+    public void dTestMakeMoveEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
         Game game = gameService.retrieveGame(1L);
 
@@ -99,15 +105,16 @@ public class WebSocketControllerTest {
     }
 
     @Test
-    public void testTerminGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+    public void eTestMakeMoveEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
 
-        stompSession.send(MESSAGE_MAPPING_TERMIN_GAME, null);
-        Thread.sleep(1000);
+        stompSession.disconnect();
     }
 
     @Test
-    public void testErrorHandler() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
-        throw new UserNameAlreadyTakenException();
+    public void eTestTerminGameEndpoint() throws URISyntaxException, InterruptedException, ExecutionException, TimeoutException {
+
+        stompSession.send(MESSAGE_MAPPING_TERMIN_GAME, null);
+
     }
 
     private List<Transport> createTransportClient() {
