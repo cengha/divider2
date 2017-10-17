@@ -4,6 +4,7 @@ import com.cengha.divider2.model.enums.GameState;
 import com.cengha.divider2.model.message.GameMessage;
 import com.cengha.divider2.service.impl.FlowServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
@@ -11,7 +12,6 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.messaging.simp.SimpMessageType;
-import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -19,14 +19,31 @@ public class WebSocketController {
 
     private final SimpMessageSendingOperations messagingTemplate;
     private final FlowServiceImpl flowService;
-    private final String GAME_CHANNEL = "/ws/channel/game/";
-    private final String PLAYER_CHANNEL = "/ws/channel/game/player/";
-    private final String ERROR_CHANNEL = "/ws/channel/game/player/error";
-    private final String MSG_CONNECTED = "Connected to the game";
-    private final String MSG_STARTED = "You have an opponent, the game has started";
-    private final String MSG_FINISHED = "Game Finished";
-    private final String MSG_TERMINATED = "Game Terminated";
-    private final String MSG_ERROR = "An error occured: ";
+
+    @Value("${ws.channel.game}")
+    private String GAME_CHANNEL;
+
+    @Value("${ws.channel.game.player}")
+    private String GAME_PLAYER_CHANNEL;
+
+    @Value("${ws.channel.game.player.error}")
+    private String GAME_PLAYER_ERROR_CHANNEL;
+
+    @Value("${ws.msg.connected}")
+    private String MSG_CONNECTED = "Connected to the game.";
+
+    @Value("${ws.msg.started}")
+    private String MSG_STARTED = "You have an opponent, the game has started.";
+
+    @Value("${ws.msg.finished}")
+    private String MSG_FINISHED = "Game Finished!";
+
+    @Value("${ws.msg.terminated}")
+    private String MSG_TERMINATED = "Game Terminated!";
+
+    @Value("${ws.msg.error}")
+    private String MSG_ERROR = "An error occurred: ";
+
     private final String MESSAGE_MAPPING_JOIN_GAME = "/game/join/{username}";
     private final String MESSAGE_MAPPING_TERMIN_GAME = "/game/{gameId}/player/{playerId}/termin";
     private final String MESSAGE_MAPPING_MAKE_MOVE = "/game/{gameId}/player/{playerId}/move/{number}";
@@ -38,9 +55,12 @@ public class WebSocketController {
     }
 
     @MessageMapping(MESSAGE_MAPPING_JOIN_GAME)
-    public void joinGame(@DestinationVariable String username) {
+    public void joinGame(@DestinationVariable String username,
+                         SimpMessageHeaderAccessor headerAccessor) {
 
-        convertAndSendGameJoinMessage(username, flowService.joinFirstAvailableGameOrCreateOne(username));
+        String sessionId = headerAccessor.getSessionId();
+        MessageHeaders headers = createHeaders(sessionId);
+        convertAndSendGameJoinMessage(sessionId, headers, flowService.joinFirstAvailableGameOrCreateOne(username));
 
     }
 
@@ -62,10 +82,10 @@ public class WebSocketController {
     }
 
     @MessageExceptionHandler
-    private void handleException(Exception ex,SimpMessageHeaderAccessor headerAccessor) {
+    private void handleException(Exception ex, SimpMessageHeaderAccessor headerAccessor) {
         String sessionId = headerAccessor.getSessionId();
         MessageHeaders headers = createHeaders(sessionId);
-        messagingTemplate.convertAndSendToUser(sessionId, ERROR_CHANNEL, MSG_ERROR + ex.getMessage(), headers);
+        messagingTemplate.convertAndSendToUser(sessionId, GAME_PLAYER_ERROR_CHANNEL, MSG_ERROR + ex.getMessage(), headers);
     }
 
     private MessageHeaders createHeaders(String sessionId) {
@@ -75,13 +95,13 @@ public class WebSocketController {
         return headerAccessor.getMessageHeaders();
     }
 
-    private void convertAndSendGameJoinMessage(String username, GameMessage gameMessage) {
+    private void convertAndSendGameJoinMessage(String sessionId, MessageHeaders headers, GameMessage gameMessage) {
         if (gameMessage.getGameState() == GameState.CREATED) {
             gameMessage.setMessage(MSG_CONNECTED);
-            convertAndSendPlayerChannel(username, gameMessage);
+            messagingTemplate.convertAndSendToUser(sessionId, GAME_PLAYER_CHANNEL, gameMessage, headers);
         } else {
             gameMessage.setMessage(MSG_STARTED);
-            convertAndSendPlayerChannel(username, gameMessage);
+            messagingTemplate.convertAndSendToUser(sessionId, GAME_PLAYER_CHANNEL, gameMessage, headers);
             convertAndSendToGameChannel(gameMessage);
         }
     }
@@ -104,14 +124,4 @@ public class WebSocketController {
     private void convertAndSendToGameChannel(GameMessage gameMessage) {
         messagingTemplate.convertAndSend(GAME_CHANNEL + gameMessage.getGameId(), gameMessage);
     }
-
-    private void convertAndSendToErrorChannel(String username) {
-        messagingTemplate.convertAndSend(ERROR_CHANNEL + username);
-    }
-
-    private void convertAndSendPlayerChannel(String username, GameMessage gameMessage) {
-        messagingTemplate.convertAndSend(PLAYER_CHANNEL + username, gameMessage);
-    }
-
-
 }

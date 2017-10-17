@@ -53,7 +53,7 @@ function onConnected() {
 
 function joinGame() {
     // Subscribe to the Private User Channel
-    stompClient.subscribe('/ws/channel/game/player/' + username, onMessageReceived);
+    stompClient.subscribe('/user/ws/channel/game/player', onMessageReceived);
     stompClient.subscribe('/user/ws/channel/game/player/error', onErrorReceived);
 
     stompClient.send("/ws/divider/game/join/" + username);
