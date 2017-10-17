@@ -31,7 +31,7 @@ public class FlowServiceTest {
     @MockBean
     public GameMessageService gameMessageService;
 
-    public FlowServiceImpl flowService;
+    public FlowService flowService;
 
     @Before
     public void setUp() throws Exception {

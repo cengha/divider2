@@ -30,7 +30,7 @@ public class GameMessageServiceTest {
     }
 
     @Test
-    public void gcreateGameMessageTest() {
+    public void createGameMessageTest() {
         Game mock = new Game(1l);
         mock.setStarted(LocalDateTime.now());
 
