@@ -20,8 +20,7 @@ with a random starter number which is lower than **1000** (configurable in prope
 * Increase test coverage and fix web socket controller tests.
 * Spring Cloud application properties implementation.
 * Web Security and WebSocket Security implementations.
-* Spring actuator endpoints implementation.
-* ActiveMQ or RabbitMQ implementation.
+* ActiveMQ or RabbitMQ implementation as broker
 
 ### Personal Notes
 
